@@ -1,8 +1,8 @@
-
-
-import { useState } from "react";
 import { Input, Button } from "reactstrap";
 import "./styles.css";
+import { useState } from "react"
+import { SharedModal } from "../../../../../shared/sharedModal";
+
 
 const SortSelect = () => {
   return (
@@ -19,36 +19,32 @@ const SearchInput = () => {
   return <Input type="search" placeholder="Search" name="search"></Input>;
 };
 
-const Modal = () => {
-
-  return (
-    <div className="modal-box">
-      Add New Task
-    </div>
-  )
-}
-
 export const HeadRight = () => {
-  const [modal, setModal] = useState(false)
+
+  const [isShowAddTaskModal, setIsShowAddTaskModal] = useState(false);
+  const handleBtnClick = () => {
+    if (isShowAddTaskModal) {
+      setIsShowAddTaskModal(false)
+    } else {
+      setIsShowAddTaskModal(true)
+    }
+  }
+
   return (
     <div className="main-section-head-right">
-      <div >
-        {modal && <Modal />}
-      </div>
-      <div className="main-section-head-right-search-box">
-        <Button style={{ width: "100%" }} onClick={() => {
-          setModal(!modal)
-        }}
-          color="success"
-          outline
-        >
-          Add New Task
-        </Button>
-        <SortSelect />
-        <SearchInput />
-      </div>
-
-
+      <Button style={{ width: "100%" }}
+        color="success"
+        outline
+        onClick={handleBtnClick}
+      >
+        Add New Task
+      </Button>
+      <SortSelect />
+      <SearchInput />
+      {isShowAddTaskModal && (<SharedModal
+        onClose={() => {
+          setIsShowAddTaskModal(false)
+        }} />)}
     </div>
   );
 };
