@@ -1,0 +1,5 @@
+.project-layout {
+  height: calc(100vh - 87px);
+  width: 100%;
+  display: flex;
+}
