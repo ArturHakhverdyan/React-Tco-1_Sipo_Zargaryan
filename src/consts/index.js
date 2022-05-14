@@ -12,3 +12,5 @@ export const NAVBAR_LINKS = {
     label: "About Me",
   },
 };
+
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;

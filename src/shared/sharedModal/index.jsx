@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
+import { BACKEND_URL } from "../../consts";
 import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
 
 
-const AddTaskForm = () => {
+const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
     const [inputsData, setInputsData] = useState({
         title: {
             value: "",
@@ -48,6 +49,23 @@ const AddTaskForm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        const { title: { value: title }, description: { value: description } } = inputsData
+        const formData = {
+            title,
+            description
+        }
+        fetch(`${BACKEND_URL}/task`,{
+            method:"POST",
+            headers: {"Content-type" : "application/json"},
+            body: JSON.stringify(formData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            setTasks((prev) => {
+                return [...prev ,data]
+            })
+        })
+        onSubmitCallback()
     }
     return (
         <Form>
@@ -94,13 +112,13 @@ const AddTaskForm = () => {
     )
 }
 
-export const SharedModal = ({ onClose }) => {
+export const SharedModal = ({ onClose , setTasks }) => {
     return (
         <Modal isOpen={true}
             toggle={onClose}>
             <ModalHeader toggle={onClose}> Modal title </ModalHeader>
             <ModalBody>
-                < AddTaskForm />
+                < AddTaskForm setTasks={setTasks} onSubmitCallback={onClose} />
             </ModalBody>
             <ModalFooter>
                 <Button
