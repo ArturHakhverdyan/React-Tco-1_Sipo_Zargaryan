@@ -1,11 +1,12 @@
-import { BACKEND_URL } from "../consts"
+import { BACKEND_URL } from "../consts";
 
-const get = (url) => {
-    fetch(url)
-        .then((res) => { res.json() })
-        .then((data) => { return data })
+function get(url) {
+  return fetch(url)
+    .then((respone) => respone.json())
+    .then((data) => {
+      return data;
+    });
 }
-
-export const GetTasks = () => {
-return  get(`${BACKEND_URL}/tasks`)
+export function getTasks() {
+  return get(`${BACKEND_URL}/task`);
 }

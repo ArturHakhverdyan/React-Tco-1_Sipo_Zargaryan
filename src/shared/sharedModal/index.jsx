@@ -104,7 +104,8 @@ const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
             </FormGroup>
             <Button
                 color="primary"
-                onClick={onSubmit} >
+                onClick={onSubmit}
+                 >
                 Add task
             </Button>
 

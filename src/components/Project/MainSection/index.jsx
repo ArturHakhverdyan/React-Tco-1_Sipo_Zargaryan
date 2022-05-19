@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetTasks } from "../../../api";
+import { getTasks } from "../../../api";
 import { Body } from "./Body";
 import { Head } from "./Head";
 import "./styles.css";
@@ -7,7 +7,8 @@ export const MainSection = () => {
   const [tasks, setTasks] = useState([])
 
   useEffect (() => {
-    GetTasks().then((data ) => {
+    getTasks()
+    .then((data ) => {
      setTasks(data)
    })
   },[])
