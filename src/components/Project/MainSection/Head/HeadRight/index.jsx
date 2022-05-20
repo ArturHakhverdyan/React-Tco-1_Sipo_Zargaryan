@@ -5,7 +5,7 @@ import { SharedModal } from "../../../../../shared/sharedModal";
 import { BACKEND_URL } from "../../../../../consts";
 
 
-const SortSelect = ({setTasks,onSortHandler}) => {
+const SortSelect = ({onSortHandler}) => {
 
 
   return (
@@ -35,13 +35,8 @@ export const HeadRight = ({setTasks}) => {
     }
   }
 
-  ////dasi jamin
-  const [searchValue,setSearchValue] = useState(null)
-  const [sortValue,setSortValue] = useState(null)
-
-
   const onSearch = (e) => {
-    setSearchValue(e.target.value)
+    
     fetch(`${BACKEND_URL}/task?search=${e.target.value}`)
     .then((res ) => res.json())
     .then((data) => setTasks(data))
@@ -70,7 +65,7 @@ export const HeadRight = ({setTasks}) => {
         Add New Task
       </Button>
       <SortSelect setTasks={setTasks}  onSortHandler={onSortHandler}/>
-      <Input type="search" placeholder="Search" name="search" onChange={onSearch}></Input>;
+      <Input type="search" placeholder="Search" name="search" onChange={onSearch}></Input>
       {isShowAddTaskModal && (<SharedModal
         onClose={() => {
           setIsShowAddTaskModal(false)

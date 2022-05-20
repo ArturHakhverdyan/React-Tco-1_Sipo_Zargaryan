@@ -7,6 +7,6 @@ function get(url) {
       return data;
     });
 }
-export function getTasks() {
+export function GetTasks() {
   return get(`${BACKEND_URL}/task`);
 }
