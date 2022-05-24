@@ -1,15 +1,16 @@
 import { Input, Button } from "reactstrap";
 import "./styles.css";
-import {  useState } from "react"
+import { useEffect, useState } from "react"
 import { SharedModal } from "../../../../../shared/sharedModal";
 import { BACKEND_URL } from "../../../../../consts";
 
 
-const SortSelect = ({onSortHandler}) => {
+const SortSelect = ({ onSortHandler }) => {
 
 
   return (
     <Input name="sort_by" type="select" onChange={onSortHandler}>
+      <option>Sort by</option>
       <option value="creation_date_newest" >created newest</option>
       <option value="creation_date_oldest">Created oldest</option>
       <option value="completion_date_newest">completed newest</option>
@@ -18,15 +19,16 @@ const SortSelect = ({onSortHandler}) => {
       <option value="z-a">Z-A</option>
     </Input>
   );
-};
+}
 
 
 
-export const HeadRight = ({setTasks}) => {
-
-
+export const HeadRight = ({ setTasks }) => {
 
   const [isShowAddTaskModal, setIsShowAddTaskModal] = useState(false);
+  const [searchTask, setSearchTask] = useState(null);
+  const [sortTask, setSortTask] = useState(null);
+
   const handleBtnClick = () => {
     if (isShowAddTaskModal) {
       setIsShowAddTaskModal(false)
@@ -35,23 +37,32 @@ export const HeadRight = ({setTasks}) => {
     }
   }
 
-  const onSearch = (e) => {
-    
-    fetch(`${BACKEND_URL}/task?search=${e.target.value}`)
-    .then((res ) => res.json())
-    .then((data) => setTasks(data))
+  const onSearchHandler = (e) => {
+    const { value } = e.target
+    setSearchTask(value)
+  }
+  const onSortHandler = (e) => {
+    const { value } = e.target
+    setSortTask(value)
+  }
 
- }
+  useEffect(() => {
+    let url = ''
+    if (searchTask && sortTask) {
+      url = `${BACKEND_URL}/task/?sort=${sortTask}&search=${ searchTask}`
+    } else if (searchTask) {
+      url = (`${BACKEND_URL}/task/?search=${searchTask}`)
 
- const onSortHandler = (e)=> {
-  const {value} = e.target
+    } else if (sortTask) {
+      url = (`${BACKEND_URL}/task/?sort=${sortTask}`)
+    }
 
-
-  fetch(`${BACKEND_URL}/task?sort=${value}`)
-  .then(res=>res.json())
-  .then(data=> setTasks(data))
-}
-
+    if (url) {
+      fetch(url)
+        .then(res => res.json())
+        .then(data => setTasks(data));
+    }
+  }, [searchTask, sortTask,setTasks])
 
 
 
@@ -64,12 +75,12 @@ export const HeadRight = ({setTasks}) => {
       >
         Add New Task
       </Button>
-      <SortSelect setTasks={setTasks}  onSortHandler={onSortHandler}/>
-      <Input type="search" placeholder="Search" name="search" onChange={onSearch}></Input>
+      <SortSelect setTasks={setTasks} onSortHandler={onSortHandler} />
+      <Input type="search" placeholder="Search" name="search" onChange={onSearchHandler}></Input>
       {isShowAddTaskModal && (<SharedModal
         onClose={() => {
           setIsShowAddTaskModal(false)
-        }} setTasks = {setTasks }/>)}
+        }} setTasks={setTasks} />)}
     </div>
   );
 };

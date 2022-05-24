@@ -7,12 +7,12 @@ import { BACKEND_URL } from '../../../consts';
 export const FilterSection = ({tasks,setTasks}) => {
 
 
-const IsActive = () => {
+const Active = () => {
   fetch(`${BACKEND_URL}/task?status=done`)
   .then(res => res.json())
   .then(data => setTasks(data) )
 }
-const IsDone = () => {
+const Done = () => {
   fetch(`${BACKEND_URL}/task?status=active`)
   .then(res => res.json())
   .then(data => setTasks(data) )
@@ -28,8 +28,8 @@ const IsDone = () => {
   return <div className="filter-section">
     <div className='status-section'>
       <p>Status</p>
-      <Button style={{ margin: "10px" }} onClick={IsDone}>Done</Button>
-      <Button onClick={IsActive}>Active</Button>
+      <Button style={{ margin: "10px" }} onClick={Done}>Done</Button>
+      <Button onClick={Active}>Active</Button>
 
     </div>
     <div className='datapicer-section'>
