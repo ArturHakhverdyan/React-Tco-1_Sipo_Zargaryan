@@ -1,33 +1,37 @@
 import { Input, Button } from "reactstrap";
 import "./styles.css";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { SharedModal } from "../../../../../shared/sharedModal";
-import { BACKEND_URL } from "../../../../../consts";
+import { SORT_FIELDS } from "../../../../../consts";
 
-
-const SortSelect = ({ onSortHandler }) => {
-
-
+const SortSelect = ({ handleSort }) => {
   return (
-    <Input name="sort_by" type="select" onChange={onSortHandler}>
-      <option>Sort by</option>
-      <option value="creation_date_newest" >created newest</option>
-      <option value="creation_date_oldest">Created oldest</option>
-      <option value="completion_date_newest">completed newest</option>
-      <option value="completion_date_oldest">completed oldest</option>
-      <option value="a-z">A-Z</option>
-      <option value="z-a">Z-A</option>
+    <Input name="sort" type="select" onChange={handleSort}>
+      {SORT_FIELDS.map(({ value, label }) => {
+        return (
+          <option value={value} key={label}>
+            {label}
+          </option>
+        );
+      })}
     </Input>
   );
-}
+};
 
+const SearchInput = ({ handleSearch }) => {
+  return (
+    <Input
+      type="search"
+      placeholder="Search"
+      name="search"
+      onChange={handleSearch}
+    />
+  );
+};
 
-
-export const HeadRight = ({ setTasks }) => {
+export const HeadRight = ({ setTasks, setFilterField }) => {
 
   const [isShowAddTaskModal, setIsShowAddTaskModal] = useState(false);
-  const [searchTask, setSearchTask] = useState(null);
-  const [sortTask, setSortTask] = useState(null);
 
   const handleBtnClick = () => {
     if (isShowAddTaskModal) {
@@ -37,33 +41,17 @@ export const HeadRight = ({ setTasks }) => {
     }
   }
 
-  const onSearchHandler = (e) => {
+  const handleSearch = (e) => {
     const { value } = e.target
-    setSearchTask(value)
-  }
-  const onSortHandler = (e) => {
-    const { value } = e.target
-    setSortTask(value)
+
+    setFilterField(['search', value])
   }
 
-  useEffect(() => {
-    let url = ''
-    if (searchTask && sortTask) {
-      url = `${BACKEND_URL}/task/?sort=${sortTask}&search=${ searchTask}`
-    } else if (searchTask) {
-      url = (`${BACKEND_URL}/task/?search=${searchTask}`)
+  const handleSort = (e) => {
+    const { value } = e.target
 
-    } else if (sortTask) {
-      url = (`${BACKEND_URL}/task/?sort=${sortTask}`)
-    }
-
-    if (url) {
-      fetch(url)
-        .then(res => res.json())
-        .then(data => setTasks(data));
-    }
-  }, [searchTask, sortTask,setTasks])
-
+    setFilterField(['sort', value])
+  }
 
 
   return (
@@ -75,8 +63,8 @@ export const HeadRight = ({ setTasks }) => {
       >
         Add New Task
       </Button>
-      <SortSelect setTasks={setTasks} onSortHandler={onSortHandler} />
-      <Input type="search" placeholder="Search" name="search" onChange={onSearchHandler}></Input>
+      <SortSelect setTasks={setTasks} handleSort={handleSort} />
+      <SearchInput  handleSearch={handleSearch}/>
       {isShowAddTaskModal && (<SharedModal
         onClose={() => {
           setIsShowAddTaskModal(false)

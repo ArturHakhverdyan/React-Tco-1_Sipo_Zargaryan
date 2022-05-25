@@ -1,39 +1,15 @@
+import { NavLink } from "react-router-dom";
 import "./styles.css";
 
-export const NavItem = ({ label, link, isActive, onClick }) => {
+export const NavItem = ({ label, link }) => {
   return (
-    <li
-      className={`nav-item ${isActive ? "active" : ""}`}
-      onClick={() => onClick(link)}
-    >
-      {label}
+    <li className={`nav-item`}>
+      <NavLink
+        to={`/${link}`}
+        className={({ isActive }) => (isActive ? "active" : undefined)}
+      >
+        {label}
+      </NavLink>
     </li>
   );
 };
-
-/* This is for students */
-
-// export const NavItem = ({ label, link, isActive, onClick }) => {
-//   const classList = ["nav-item"];
-//   if (isActive) {
-//     classList.push("active");
-//   }
-
-//   return (
-//     <li className={classList.join(" ")} onClick={() => onClick(link)}>
-//       {label}
-//     </li>
-//   );
-// };
-
-// export const NavItem = ({ label }) => {
-//   const styles = {
-//     color: "red",
-//     fontSize: "30px",
-//   };
-//   return (
-//     <li style={styles} className="nav-item">
-//       {label}
-//     </li>
-//   );
-// };
