@@ -1,4 +1,5 @@
-import { memo,  useState } from "react";
+import { memo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -39,24 +40,23 @@ export const CardComponent = memo(({ todo,
         width="100%"
       />
       <CardBody>
-        <CardTitle tag="h5">
-          {title}
-        </CardTitle>
-
+        <Link to={`/project/${_id}`}>
+          <CardTitle tag="h5">{title}</CardTitle>
+        </Link>
         <CardText>
-          {description}
+          {description.substring(0, 10)}
         </CardText>
 
         <Button onClick={() => {
           taskStatusChangeHendler(_id, nextStatus)
 
         }}
-        color = {status === "done" ? "danger" : "success"}>
+          color={status === "done" ? "danger" : "success"}>
           {status}
         </Button>
 
         <Button color='danger' style={{ marginLeft: "40px" }} onClick={() => DeleteRequest(_id,)} >Delete</Button>
-        <Button  color='warning' style={{ marginLeft: "40px" }} onClick={editOpenHandler} > Edit </Button>
+        <Button color='warning' style={{ marginLeft: "40px" }} onClick={editOpenHandler} > Edit </Button>
         {showEditModal && (<EditModal
           editableState={editableState}
           onClose={() => {

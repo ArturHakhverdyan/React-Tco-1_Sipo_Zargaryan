@@ -1,0 +1,14 @@
+.single-task-card{
+    border: 1px solid black;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    left: 42%;
+    top: 44%;
+    text-align: center;
+}
+.single-task-card-btn{
+    position: absolute;
+    left: 92%;
+    bottom: 90%;
+}
