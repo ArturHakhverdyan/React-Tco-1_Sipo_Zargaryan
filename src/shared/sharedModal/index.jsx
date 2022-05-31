@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
 import { BACKEND_URL } from "../../consts";
 import { IsRequired, MaxLength20, MaxLength500, MinLength3 } from "../../helpers/validation";
-
+import * as moment from "moment";
+import { DatePick } from "../../components/datePick";
 
 const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
     const [inputsData, setInputsData] = useState({
@@ -47,24 +48,34 @@ const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
         })
     }
 
+    const [startDate, setStartDate] = useState(new Date());
+
     const onSubmit = (e) => {
         e.preventDefault();
         const { title: { value: title }, description: { value: description } } = inputsData
         const formData = {
             title,
-            description
+            description,
+            date: moment(startDate).format('YYYY-MM-DD')
         }
-        fetch(`${BACKEND_URL}/task`,{
-            method:"POST",
-            headers: {"Content-type" : "application/json"},
+        fetch(`${BACKEND_URL}/task`, {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
             body: JSON.stringify(formData)
         })
-        .then((response) => response.json())
-        .then((data) => {
-            setTasks((prev) => {
-                return [...prev ,data]
-            })
-        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error) {
+                    throw data.error
+                }
+                setTasks((prev) => {
+
+                    return [...prev, data]
+                })
+
+
+            }).catch("error")
+
         onSubmitCallback()
     }
     return (
@@ -102,10 +113,13 @@ const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
                     <FormFeedback>{inputsData.description.error}</FormFeedback>
                 )}
             </FormGroup>
+            <FormGroup>
+                <DatePick startDate = {startDate} setStartDate = {setStartDate}/>
+            </FormGroup>
             <Button
                 color="primary"
                 onClick={onSubmit}
-                 >
+            >
                 Add task
             </Button>
 
@@ -113,7 +127,7 @@ const AddTaskForm = ({ onSubmitCallback, setTasks }) => {
     )
 }
 
-export const SharedModal = ({ onClose , setTasks }) => {
+export const SharedModal = ({ onClose, setTasks }) => {
     return (
         <Modal isOpen={true}
             toggle={onClose}>
