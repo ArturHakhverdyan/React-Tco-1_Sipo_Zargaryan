@@ -29,7 +29,7 @@ const SearchInput = ({ handleSearch }) => {
   );
 };
 
-export const HeadRight = ({ setTasks, setFilterField }) => {
+export const HeadRight = ({  setFilterField }) => {
 
   const [isShowAddTaskModal, setIsShowAddTaskModal] = useState(false);
 
@@ -63,12 +63,12 @@ export const HeadRight = ({ setTasks, setFilterField }) => {
       >
         Add New Task
       </Button>
-      <SortSelect setTasks={setTasks} handleSort={handleSort} />
+      <SortSelect  handleSort={handleSort} />
       <SearchInput  handleSearch={handleSearch}/>
       {isShowAddTaskModal && (<SharedModal
         onClose={() => {
           setIsShowAddTaskModal(false)
-        }} setTasks={setTasks} />)}
+        }}  />)}
     </div>
   );
 };

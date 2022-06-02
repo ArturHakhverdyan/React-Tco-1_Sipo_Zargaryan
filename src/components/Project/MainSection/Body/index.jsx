@@ -1,9 +1,12 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+import { TaskContext } from "../../../../context";
 import { CardComponent } from "../../CardComponent";
 import "./styles.css";
-export const Body = ({ tasks, setTasks }) => {
+export const Body = () => {
+  const {tasks,setTasks} = useContext(TaskContext)
 
   const taskStatusChangeHendler = useCallback((_id, status) => {
+    
     fetch(`http://localhost:3001/task/${_id}`, {
       headers: { "Content-Type": "application/json" },
       method: "PUT",
@@ -44,8 +47,6 @@ export const Body = ({ tasks, setTasks }) => {
       {tasks.map((todo) => {
         return <CardComponent key={todo._id}
           todo={todo}
-          tasks={tasks}
-          setTasks={setTasks}
           DeleteRequest={DeleteRequest}
           taskStatusChangeHendler={taskStatusChangeHendler} />;
       })}

@@ -1,9 +1,9 @@
 import "./styles.css";
 import { HeadRight } from "./HeadRight";
-export const Head = ({setTasks,setFilterField}) => {
+export const Head = ({setFilterField}) => {
   return (
     <div className="main-section-head">
-      <HeadRight setTasks = {setTasks} setFilterField={setFilterField} />
+      <HeadRight  setFilterField={setFilterField} />
     </div>
   );
 };

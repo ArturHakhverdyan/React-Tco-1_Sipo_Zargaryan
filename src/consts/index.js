@@ -24,3 +24,10 @@ export const SORT_FIELDS = [
   { label: "A - Z", value: "a-z" },
   { label: "Z - A", value: "z-a" },
 ];
+
+export const FILTER_DATE_PICKERS = [
+  { label: "Created later", value: "create_lte" },
+  { label: "Created gratter", value: "create_gte" },
+  { label: "Completed later", value: "complete_lte" },
+  { label: "Completed gratter", value: "complete_gte" },
+];

@@ -1,10 +1,12 @@
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Modal, ModalBody, ModalFooter, ModalHeader, Button, Label, Input, FormGroup, Form, FormFeedback } from "reactstrap"
 import { BACKEND_URL } from "../../consts"
+import { TaskContext } from "../../context";
 import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
 
-const EditTaskForm = ({ editableState, setTasks, onSubmitCallback }) => {
+const EditTaskForm = ({ editableState,  onSubmitCallback }) => {
+    const {setTasks} = useContext(TaskContext)
     const [editTaskValue, setEditTaskValue] = useState({
         title: {
             value: editableState.title,
@@ -123,7 +125,7 @@ const EditTaskForm = ({ editableState, setTasks, onSubmitCallback }) => {
 
 
 
-export const EditModal = ({ onClose, editableState, setTasks }) => {
+export const EditModal = ({ onClose, editableState,  }) => {
 
     return (
         <Modal isOpen={true}
@@ -131,7 +133,6 @@ export const EditModal = ({ onClose, editableState, setTasks }) => {
             <ModalHeader toggle={onClose}> Modal title </ModalHeader>
             <ModalBody>
                 <EditTaskForm editableState={editableState}
-                    setTasks={setTasks}
                     onSubmitCallback={onClose} />
             </ModalBody>
             <ModalFooter>

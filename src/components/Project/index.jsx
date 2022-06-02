@@ -7,7 +7,6 @@ import { MainSection } from "./MainSection";
 import "./styles.css";
 
 export const Project = () => {
-  const {tasks} = useContext(TaskContext)
   const {setTasks} = useContext(TaskContext)
   const [queryObject, setQueryObject] = useState({})
   
@@ -19,7 +18,7 @@ export const Project = () => {
     getTasksRequest(query).then((data) => {
       setTasks(data);
     });
-  }, [queryObject]);
+  }, [queryObject,setTasks]);
 
 
   const setFilterField = useCallback((filterEntries) => {
@@ -44,10 +43,9 @@ export const Project = () => {
   }, []);
   return (
     <div className="project-layout">
-      <FilterSection tasks={tasks}
-       setTasks={setTasks} 
+      <FilterSection 
        setFilterField = {setFilterField} />
-      <MainSection tasks={tasks} setTasks={setTasks} setFilterField={setFilterField} />
+      <MainSection  setFilterField={setFilterField} />
     </div>
   );
 };

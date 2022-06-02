@@ -11,8 +11,6 @@ import {
 import { EditModal } from "../../../shared/EditTaskModal";
 
 export const CardComponent = memo(({ todo,
-  setTasks,
-  tasks,
   DeleteRequest,
   taskStatusChangeHendler,
 }) => {
@@ -63,7 +61,6 @@ export const CardComponent = memo(({ todo,
             setShowEditModal(false)
             setEditableState(null)
           }}
-          setTasks={setTasks}
 
         />)}
 

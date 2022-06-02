@@ -1,62 +1,87 @@
 import './styles.css'
-import { Button } from "reactstrap";
-import { BACKEND_URL } from '../../../consts';
-import { DatePickCompletedGte, DatePickCompletedLte, DatePickCreateGte, DatePickCreateLte } from '../../datePick';
-import { useCallback, useState } from 'react';
+import { BACKEND_URL, FILTER_DATE_PICKERS } from '../../../consts';
+import { useCallback, useContext, useState } from 'react';
+import { DatePick } from '../../datePick';
+import * as moment from "moment";
+import { Button } from 'reactstrap';
+import { TaskContext } from '../../../context';
 
-export const FilterSection = ({ setTasks, setFilterField }) => {
+export const FilterSection = ({ setFilterField }) => {
+  const {setTasks} = useContext(TaskContext)
+  const createdLte = useState(new Date());
+  const createdGte = useState(new Date());
+  const completedLte = useState(new Date());
+  const completedGte = useState(new Date());
 
-  const [createLte, setCreateLte] = useState(new Date())
-  const [createGte, setCreateGte] = useState(new Date())
-  const [completeLte, setCompleteLte] = useState(new Date())
-  const [completeGte, setCompleteGte] = useState(new Date())
-
-  const handleCreateLte = useCallback((date) => {
-    setCreateLte(date)
-    setFilterField(['create_lte', createLte])
-  }, [createLte,setFilterField])
-
-  const handleCreateGte = useCallback((date) => {
-    setCreateGte(date)
-    setFilterField(['create_gte', createGte])
-  }, [createGte,setFilterField])
-
-  const handleCompletedLte = useCallback((date) => {
-    setCompleteLte(date)
-    setFilterField(['complete_lte', completeLte])
-  }, [completeLte,setFilterField])
-
-  const handleCompletedGte =useCallback((date) => {
-    setCompleteGte(date)
-    setFilterField(['complete_gte', completeGte])
-  },[completeGte,setFilterField])
-
+  const getFilterState = useCallback(
+    (name) => {
+      switch (name) {
+        case "create_lte":
+          return createdLte;
+        case "create_gte":
+          return createdGte;
+        case "complete_lte":
+          return completedLte;
+        case "complete_gte":
+          return completedGte;
+        default:
+          return null;
+      }
+    },
+    [createdLte, createdGte, completedLte, completedGte]
+  );
   const Active = () => {
     fetch(`${BACKEND_URL}/task?status=done`)
       .then(res => res.json())
       .then(data => setTasks(data))
   }
+
   const Done = () => {
     fetch(`${BACKEND_URL}/task?status=active`)
       .then(res => res.json())
       .then(data => setTasks(data))
   }
 
+  return (
+    <div className="filter-section">
+      {FILTER_DATE_PICKERS.map((pickerData, index) => {
+        const [date, setDate] = getFilterState(pickerData.value);
 
+        return (
+          <div key={index}>
+            <p>{pickerData.label}</p>
+            <DatePick
+              startDate={date}
+              setStartDate={(date) => {
+                setDate(date);
+                setFilterField([
+                  pickerData.value,
+                  moment(date).format("YYYY-MM-DD"),
+                ]);
+              }}
+              name={pickerData.value}
+            />
+            <button
+              onClick={() => {
+                setDate(new Date());
+                setFilterField([pickerData.value, ""]);
+              }}
+            >
+              Reset
+            </button>
+          </div>
+        );
+      })}
 
-  return <div className="filter-section">
-    <div className='status-section'>
-      <p>Status</p>
-      <Button style={{ margin: "10px" }} onClick={Done}>Done</Button>
-      <Button onClick={Active}>Active</Button>
-
+      <div className='status-section'>
+        <p>Status</p>
+        <Button style={{ margin: "10px" }} onClick={Done}>Done</Button>
+        <Button onClick={Active}>Active</Button>
+      </div>
     </div>
-    <div className='datapicer-section'>
-      <span >create_lte:</span> < DatePickCreateLte createLte={createLte} handleCreateLte={handleCreateLte} />
-      <span>create_gte:</span><DatePickCreateGte createGte={createGte} handleCreateGte={handleCreateGte} />
-      <span>complete_lte:</span><DatePickCompletedLte completeLte={completeLte} handleCompletedLte={handleCompletedLte} />
-      <span>complete_gte:</span><DatePickCompletedGte completeGte={completeGte} handleCompletedGte={handleCompletedGte} />
-    </div>
-
-  </div>;
+  );
 };
+
+
+
+
