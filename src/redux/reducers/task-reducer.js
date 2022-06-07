@@ -8,7 +8,6 @@ export const taskReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'SET_TASKS': {
-            // action.payload [{},{}]
             return {
                 ...state,
                 tasks: action.payload

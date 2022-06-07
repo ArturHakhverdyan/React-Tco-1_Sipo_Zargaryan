@@ -1,23 +1,18 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback,  useEffect, useState } from "react";
 import { getTasksRequest } from "../../api";
-import { TaskContext } from "../../context";
 import { generateQuery } from "../../helpers";
 import { FilterSection } from "./FilterSection";
 import { MainSection } from "./MainSection";
-import { connect } from "react-redux";
-
 import "./styles.css";
 import { setTasksAction } from "../../redux/action/task-action";
+import { connect } from "react-redux";
 
-export const ConnectedProject = () => {
-  const {setTasks} = useContext(TaskContext)
+
+export const ConnectedProject = ({setTasks}) => {
   const [queryObject, setQueryObject] = useState({})
   
-  
-
   useEffect(() => {
     const query = generateQuery(queryObject);
-
     getTasksRequest(query).then((data) => {
       setTasks(data);
     });

@@ -1,15 +1,14 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback,  useState } from "react";
 import { Button } from "reactstrap";
 import { BACKEND_URL } from "../../../../consts";
-import { TaskContext } from "../../../../context";
 import { CardComponent } from "../../CardComponent";
 import { connect } from "react-redux";
 
 import "./styles.css";
 import { removeMultipleTasksAction } from "../../../../redux/action/task-action";
 
-export const ConnectedBody = ({removeMultipleTasks}) => {
-  const { tasks, setTasks } = useContext(TaskContext)
+export const ConnectedBody = ({removeMultipleTasks,tasks,setTasks}) => {
+  
 
   const taskStatusChangeHendler = useCallback((_id, status) => {
 
@@ -102,6 +101,7 @@ export const ConnectedBody = ({removeMultipleTasks}) => {
 };
 const mapStateToProps = (state) => ({
   tasks: state.taskReducerState.tasks
+
 })
 const mapDispatchToProps = (dispatch) => ({
   removeMultipleTasks: (deletedTasksIds) => dispatch(removeMultipleTasksAction(deletedTasksIds))
