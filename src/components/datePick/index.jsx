@@ -5,7 +5,6 @@ export const DatePick = ({ startDate, setStartDate,name }) => {
     <DatePicker
       selected={startDate}
       onChange={(date) => setStartDate(date,name)}
-      dateFormat={"yyyy-mm-dd"}
     />
   );
 };

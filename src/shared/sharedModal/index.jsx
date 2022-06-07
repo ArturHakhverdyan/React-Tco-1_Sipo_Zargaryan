@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
 import { BACKEND_URL } from "../../consts";
 import { IsRequired, MaxLength20, MaxLength500, MinLength3 } from "../../helpers/validation";
 import * as moment from "moment";
 import { DatePick } from "../../components/datePick";
-import { TaskContext } from "../../context";
+import { connect } from "react-redux";
+import { addNewTaskAction } from "../../redux/action/task-action";
 
-const AddTaskForm = ({ onSubmitCallback,  }) => {
-    const {setTasks} = useContext(TaskContext)
+
+
+const ConnectedAddTaskForm= ({ onSubmitCallback, addNewTask }) => {
     const [inputsData, setInputsData] = useState({
         title: {
             value: "",
@@ -62,24 +64,18 @@ const AddTaskForm = ({ onSubmitCallback,  }) => {
         }
         fetch(`${BACKEND_URL}/task`, {
             method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(formData)
-        })
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
             .then((response) => response.json())
             .then((data) => {
-                if (data.error) {
-                    throw data.error
-                }
-                setTasks((prev) => {
-
-                    return [...prev, data]
-                })
-
-
-            }).catch("error")
-
-        onSubmitCallback()
-    }
+              addNewTask(data)
+              onSubmitCallback();
+            });
+    };
+  
     return (
         <Form>
             <FormGroup>
@@ -128,6 +124,10 @@ const AddTaskForm = ({ onSubmitCallback,  }) => {
         </Form>
     )
 }
+
+export const AddTaskForm = connect(null, {
+    addNewTask: addNewTaskAction
+  })(ConnectedAddTaskForm)
 
 export const SharedModal = ({ onClose,  }) => {
     return (

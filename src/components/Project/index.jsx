@@ -4,9 +4,12 @@ import { TaskContext } from "../../context";
 import { generateQuery } from "../../helpers";
 import { FilterSection } from "./FilterSection";
 import { MainSection } from "./MainSection";
-import "./styles.css";
+import { connect } from "react-redux";
 
-export const Project = () => {
+import "./styles.css";
+import { setTasksAction } from "../../redux/action/task-action";
+
+export const ConnectedProject = () => {
   const {setTasks} = useContext(TaskContext)
   const [queryObject, setQueryObject] = useState({})
   
@@ -49,3 +52,7 @@ export const Project = () => {
     </div>
   );
 };
+
+export const Project = connect(null, {
+  setTasks: setTasksAction
+})(ConnectedProject)

@@ -13,6 +13,8 @@ import { EditModal } from "../../../shared/EditTaskModal";
 export const CardComponent = memo(({ todo,
   DeleteRequest,
   taskStatusChangeHendler,
+  deleteCardHendler,
+  toggleDeletedTask
 }) => {
 
   const { status, description, title, _id } = todo
@@ -30,7 +32,11 @@ export const CardComponent = memo(({ todo,
   }
 
   return (
+    
     <Card style={{ marginBottom: "15px" }}>
+       <div>
+        <input type="checkbox" onClick={() => toggleDeletedTask(_id)} />
+      </div>
       <CardImg
         alt="Card image cap"
         src="https://picsum.photos/318/180"
