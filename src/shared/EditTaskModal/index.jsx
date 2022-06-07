@@ -1,12 +1,12 @@
 
-import { useContext, useState } from "react"
+import {  useState } from "react"
+import { connect } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Button, Label, Input, FormGroup, Form, FormFeedback } from "reactstrap"
 import { BACKEND_URL } from "../../consts"
-import { TaskContext } from "../../context";
 import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
+import { editTaskAction } from "../../redux/action/task-action";
 
-const EditTaskForm = ({ editableState,  onSubmitCallback }) => {
-    const {setTasks} = useContext(TaskContext)
+const EditTaskFormConected = ({ editableState,  onSubmitCallback,editTask }) => {
     const [editTaskValue, setEditTaskValue] = useState({
         title: {
             value: editableState.title,
@@ -37,15 +37,7 @@ const EditTaskForm = ({ editableState,  onSubmitCallback }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                setTasks((prev) => {
-                  return  prev.map(item => {
-                        if (item._id === editableState._id) {
-                          return data 
-
-                        } 
-                        return item 
-                    })
-                })
+                editTask(data)
                 onSubmitCallback()
             })
          
@@ -121,6 +113,19 @@ const EditTaskForm = ({ editableState,  onSubmitCallback }) => {
         </Form>
     )
 }
+
+const mapStateToProps = (state) => ({
+    tasks: state.taskReducerState.tasks
+  
+  })
+  const mapDispatchToProps = (dispatch) => ({
+    editTask : (editTask) => dispatch(editTaskAction(editTask)),
+ 
+  
+  })
+  
+  export const EditTaskForm = connect(mapStateToProps, mapDispatchToProps)(EditTaskFormConected)
+  
 
 
 

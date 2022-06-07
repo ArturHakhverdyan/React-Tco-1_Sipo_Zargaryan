@@ -29,6 +29,30 @@ export const taskReducer = (state = initialState, action) => {
                 tasks
             }
         }
+        case "DELETE_SINGLE_CARD": {
+            const taskId = action.payload
+            const tasks = state.tasks.filter(task => !taskId.includes(task._id))
+            return {
+                ...state,
+                tasks
+            }
+        }
+        case 'EDIT_TASK_ACTION': {
+            const editTask = action.payload
+            const tasks = state.tasks.map(task => task._id === editTask._id ? editTask :  task)
+            return {
+                ...state,
+                tasks
+            }
+        }
+        case 'TASK_STATUS_CHANGE' : {
+            const taskStatus = action.payload
+            const tasks = state.tasks.map(task => task._id ===taskStatus._id ? taskStatus: task )
+            return {
+                ...state,
+                tasks
+            }
+        }
         default:
             return state;
     }

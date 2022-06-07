@@ -18,3 +18,22 @@ export const addNewTaskAction = (newTask) => {
         payload:newTask
     }
 }
+export const deleteSingleCardAction = (taskId) => {
+    return {
+        type: "DELETE_SINGLE_CARD",
+        payload:taskId
+    }
+}
+
+export const editTaskAction = (newTask) => {
+    return {
+        type: "EDIT_TASK_ACTION",
+        payload:newTask
+    }
+}
+export const taskStatusChangeAction = (taskId) => {
+    return {
+        type: "TASK_STATUS_CHANGE",
+        payload:taskId
+    }
+}
