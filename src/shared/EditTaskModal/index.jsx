@@ -2,9 +2,8 @@
 import {  useState } from "react"
 import { connect } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Button, Label, Input, FormGroup, Form, FormFeedback } from "reactstrap"
-import { BACKEND_URL } from "../../consts"
 import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
-import { editTaskAction, editTaskThunk } from "../../redux/action/task-action";
+import {  editTaskThunk } from "../../redux/action/task-action";
 
 const EditTaskFormConected = ({ editableState,  onSubmitCallback,editTask }) => {
     const [editTaskValue, setEditTaskValue] = useState({
@@ -29,7 +28,6 @@ const EditTaskFormConected = ({ editableState,  onSubmitCallback,editTask }) => 
             description
         }
 
-       
         editTask(editableState,onSubmitCallback,formEdit)
          
     }
@@ -105,18 +103,12 @@ const EditTaskFormConected = ({ editableState,  onSubmitCallback,editTask }) => 
     )
 }
 
-const mapStateToProps = (state) => ({
-    tasks: state.taskReducerState.tasks
+
+export const EditTaskForm = connect(null, {
+    editTask: editTaskThunk
+  })(EditTaskFormConected)
   
-  })
-  const mapDispatchToProps = (dispatch) => ({
-    editTask : (editTask) => dispatch(editTaskThunk(editTask)),
- 
-  
-  })
-  
-  export const EditTaskForm = connect(mapStateToProps, mapDispatchToProps)(EditTaskFormConected)
-  
+
 export const EditModal = ({ onClose, editableState,  }) => {
 
     return (

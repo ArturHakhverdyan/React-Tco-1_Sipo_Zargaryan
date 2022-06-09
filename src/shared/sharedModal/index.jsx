@@ -1,11 +1,10 @@
 import {  useState } from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
-import { BACKEND_URL } from "../../consts";
 import { IsRequired, MaxLength20, MaxLength500, MinLength3 } from "../../helpers/validation";
 import * as moment from "moment";
 import { DatePick } from "../../components/datePick";
 import { connect } from "react-redux";
-import { addNewTaskAction, addNewTaskThunk } from "../../redux/action/task-action";
+import {  addNewTaskThunk } from "../../redux/action/task-action";
 
 
 
@@ -117,6 +116,8 @@ const ConnectedAddTaskForm= ({ onSubmitCallback, addNewTask }) => {
 export const AddTaskForm = connect(null, {
     addNewTask: addNewTaskThunk
   })(ConnectedAddTaskForm)
+  
+
 
 export const SharedModal = ({ onClose,  }) => {
     return (

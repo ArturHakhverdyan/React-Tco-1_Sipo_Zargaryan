@@ -1,28 +1,17 @@
 import { useCallback, useState } from "react";
 import { Button } from "reactstrap";
-import { BACKEND_URL } from "../../../../consts";
 import { CardComponent } from "../../CardComponent";
 import { connect } from "react-redux";
 
 import "./styles.css";
-import { deleteSingleCardAction, deleteSingleCardThunk, removeMultipleTasksThunk, taskStatusChangeAction, taskStatusChangeThunk } from "../../../../redux/action/task-action";
+import {  deleteSingleCardThunk, removeMultipleTasksThunk,  taskStatusChangeThunk } from "../../../../redux/action/task-action";
 
-export const ConnectedBody = ({ removeMultipleTasks, tasks, setTasks, deleteSingleCard, taskStatusChange }) => {
+export const ConnectedBody = ({ removeMultipleTasks, tasks, deleteSingleCard, taskStatusChange }) => {
 
 
   const taskStatusChangeHendler = useCallback((_id, status) => {
-
-    fetch(`http://localhost:3001/task/${_id}`, {
-      headers: { "Content-Type": "application/json" },
-      method: "PUT",
-      body: JSON.stringify({
-        status,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        taskStatusChange(data)
-      });
+    taskStatusChange(_id,status)
+    
   }, [taskStatusChange])
 
 
@@ -76,11 +65,17 @@ export const ConnectedBody = ({ removeMultipleTasks, tasks, setTasks, deleteSing
 
 const mapStateToProps = (state) => ({
   tasks: state.taskReducerState.tasks
-})
-const mapDispatchToProps = (dispatch) => ({
-  removeMultipleTasks: (deletedTasksIds) => dispatch(removeMultipleTasksThunk(deletedTasksIds)),
-  deleteSingleCard: (taskId) => dispatch(deleteSingleCardThunk(taskId)),
-  taskStatusChange: (taskStatus) => dispatch(taskStatusChangeThunk(taskStatus))
-})
+}) 
 
-export const Body = connect(mapStateToProps, mapDispatchToProps)(ConnectedBody)
+// dispatch version______________________________
+// const mapDispatchToProps = (dispatch) => ({
+//   removeMultipleTasks: (deletedTasksIds) => dispatch(removeMultipleTasksThunk(deletedTasksIds)),
+//   deleteSingleCard: (taskId) => dispatch(deleteSingleCardThunk(taskId)),
+//   taskStatusChange: (_id,taskStatus) => dispatch(taskStatusChangeThunk(_id,taskStatus))
+// })
+
+export const Body = connect(mapStateToProps, {
+  removeMultipleTasks:removeMultipleTasksThunk,
+  deleteSingleCard:deleteSingleCardThunk,
+  taskStatusChange:taskStatusChangeThunk
+})(ConnectedBody)

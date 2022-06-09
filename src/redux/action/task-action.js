@@ -111,7 +111,8 @@ export const editTaskThunk = (editableState,onSubmitCallback,formEdit) => (dispa
         .then((res) => res.json())
         .then((data) => {
             dispatch(editTaskAction(data))
-            onSubmitCallback()
+            
         })
+        onSubmitCallback()
 
 }
