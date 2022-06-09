@@ -1,13 +1,14 @@
 import './styles.css'
 import { BACKEND_URL, FILTER_DATE_PICKERS } from '../../../consts';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback,  useState } from 'react';
 import { DatePick } from '../../datePick';
 import * as moment from "moment";
 import { Button } from 'reactstrap';
-import { TaskContext } from '../../../context';
+import { setTasksAction } from '../../../redux/action/task-action';
+import { connect } from 'react-redux';
 
-export const FilterSection = ({ setFilterField }) => {
-  const {setTasks} = useContext(TaskContext)
+ const FilterSectionConnected = ({ setFilterField ,setTasks}) => {
+ 
   const createdLte = useState(new Date());
   const createdGte = useState(new Date());
   const completedLte = useState(new Date());
@@ -84,4 +85,4 @@ export const FilterSection = ({ setFilterField }) => {
 
 
 
-
+ export const  FilterSection =connect(null,{setTasks:setTasksAction}) (FilterSectionConnected)

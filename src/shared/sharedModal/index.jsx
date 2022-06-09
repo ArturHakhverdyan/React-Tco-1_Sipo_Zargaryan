@@ -5,7 +5,7 @@ import { IsRequired, MaxLength20, MaxLength500, MinLength3 } from "../../helpers
 import * as moment from "moment";
 import { DatePick } from "../../components/datePick";
 import { connect } from "react-redux";
-import { addNewTaskAction } from "../../redux/action/task-action";
+import { addNewTaskAction, addNewTaskThunk } from "../../redux/action/task-action";
 
 
 
@@ -62,18 +62,7 @@ const ConnectedAddTaskForm= ({ onSubmitCallback, addNewTask }) => {
             description,
             date: moment(startDate).format('YYYY-MM-DD')
         }
-        fetch(`${BACKEND_URL}/task`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              addNewTask(data)
-              onSubmitCallback();
-            });
+        addNewTask(formData,onSubmitCallback)
     };
   
     return (
@@ -126,7 +115,7 @@ const ConnectedAddTaskForm= ({ onSubmitCallback, addNewTask }) => {
 }
 
 export const AddTaskForm = connect(null, {
-    addNewTask: addNewTaskAction
+    addNewTask: addNewTaskThunk
   })(ConnectedAddTaskForm)
 
 export const SharedModal = ({ onClose,  }) => {

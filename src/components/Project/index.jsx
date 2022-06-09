@@ -1,22 +1,19 @@
 import { useCallback,  useEffect, useState } from "react";
-import { getTasksRequest } from "../../api";
 import { generateQuery } from "../../helpers";
 import { FilterSection } from "./FilterSection";
 import { MainSection } from "./MainSection";
 import "./styles.css";
-import { setTasksAction } from "../../redux/action/task-action";
+import { getTasksThunk, } from "../../redux/action/task-action";
 import { connect } from "react-redux";
 
 
-export const ConnectedProject = ({setTasks}) => {
+export const ConnectedProject = ({getTasks}) => {
   const [queryObject, setQueryObject] = useState({})
   
   useEffect(() => {
     const query = generateQuery(queryObject);
-    getTasksRequest(query).then((data) => {
-      setTasks(data);
-    });
-  }, [queryObject,setTasks]);
+    getTasks(query)
+  }, [queryObject,getTasks]);
 
 
   const setFilterField = useCallback((filterEntries) => {
@@ -49,5 +46,5 @@ export const ConnectedProject = ({setTasks}) => {
 };
 
 export const Project = connect(null, {
-  setTasks: setTasksAction
+  getTasks: getTasksThunk
 })(ConnectedProject)

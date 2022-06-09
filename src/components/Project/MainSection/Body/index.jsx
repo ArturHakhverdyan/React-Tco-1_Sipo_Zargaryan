@@ -1,14 +1,14 @@
-import { useCallback,  useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "reactstrap";
 import { BACKEND_URL } from "../../../../consts";
 import { CardComponent } from "../../CardComponent";
 import { connect } from "react-redux";
 
 import "./styles.css";
-import { deleteSingleCardAction, removeMultipleTasksAction,taskStatusChangeAction } from "../../../../redux/action/task-action";
+import { deleteSingleCardAction, deleteSingleCardThunk, removeMultipleTasksThunk, taskStatusChangeAction, taskStatusChangeThunk } from "../../../../redux/action/task-action";
 
-export const ConnectedBody = ({removeMultipleTasks,tasks,setTasks,deleteSingleCard,taskStatusChange}) => {
-  
+export const ConnectedBody = ({ removeMultipleTasks, tasks, setTasks, deleteSingleCard, taskStatusChange }) => {
+
 
   const taskStatusChangeHendler = useCallback((_id, status) => {
 
@@ -27,14 +27,7 @@ export const ConnectedBody = ({removeMultipleTasks,tasks,setTasks,deleteSingleCa
 
 
   const DeleteRequest = useCallback((_id) => {
-    fetch(`http://localhost:3001/task/${_id}`, {
-      method: "DELETE",
-    })
-      .then(res => res.json())
-      .then(() => {
-        deleteSingleCard(_id)
-        
-      })
+    deleteSingleCard(_id)
 
 
   }, [deleteSingleCard])
@@ -53,55 +46,41 @@ export const ConnectedBody = ({removeMultipleTasks,tasks,setTasks,deleteSingleCa
 
   const handleBatchDelete = () => {
     const batchDelTasks = Array.from(deletedTasksSet)
-    fetch(`${BACKEND_URL}/task`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        tasks: batchDelTasks
-      }),
-      headers: {
-        "Content-type": "application/json"
-      }
-    })
-    .then((res) => res.json())
-      .then(() => {
-        removeMultipleTasks(batchDelTasks)
-      });
-      setDeletedTasksSet(new Set())
+    removeMultipleTasks(batchDelTasks)
+    setDeletedTasksSet(new Set())
 
   };
   return (
 
-<div>
     <div>
-    {!!deletedTasksSet.size && <Button onClick={handleBatchDelete} color = "primary">
-        Delete All
-    </Button>}
+      <div>
+        {!!deletedTasksSet.size && <Button onClick={handleBatchDelete} color="primary">
+          Delete All
+        </Button>}
 
-  </div>
-    <div className="main-section-body">
-     
-      {tasks.map((todo) => {
-        return <CardComponent key={todo._id}
-          todo={todo}
-          DeleteRequest={DeleteRequest}
-          taskStatusChangeHendler={taskStatusChangeHendler}
-          toggleDeletedTask={toggleDeletedTask}
-        />;
-      })}
-    </div>
+      </div>
+      <div className="main-section-body">
+
+        {tasks.map((todo) => {
+          return <CardComponent key={todo._id}
+            todo={todo}
+            DeleteRequest={DeleteRequest}
+            taskStatusChangeHendler={taskStatusChangeHendler}
+            toggleDeletedTask={toggleDeletedTask}
+          />;
+        })}
+      </div>
     </div>
   );
 };
+
 const mapStateToProps = (state) => ({
   tasks: state.taskReducerState.tasks
-
 })
 const mapDispatchToProps = (dispatch) => ({
-  removeMultipleTasks: (deletedTasksIds) => dispatch(removeMultipleTasksAction(deletedTasksIds)),
-  // {type:'REMOVE_MULTIPLE_TASKS' , payload:deletedTasksIds}
-  deleteSingleCard:(taskId ) => dispatch(deleteSingleCardAction(taskId)),
-  taskStatusChange:(taskId ) => dispatch(taskStatusChangeAction(taskId))
-
+  removeMultipleTasks: (deletedTasksIds) => dispatch(removeMultipleTasksThunk(deletedTasksIds)),
+  deleteSingleCard: (taskId) => dispatch(deleteSingleCardThunk(taskId)),
+  taskStatusChange: (taskStatus) => dispatch(taskStatusChangeThunk(taskStatus))
 })
 
 export const Body = connect(mapStateToProps, mapDispatchToProps)(ConnectedBody)
