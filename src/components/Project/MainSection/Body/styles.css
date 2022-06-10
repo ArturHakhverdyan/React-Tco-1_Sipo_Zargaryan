@@ -1,12 +1,10 @@
 .main-section-body {
   width: 100%;
-  height: calc(100% - 200px);
+  height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 42px,
-  
-  
-  
+  padding-top: 40px;
+  background-color: #3EECAC;
 }

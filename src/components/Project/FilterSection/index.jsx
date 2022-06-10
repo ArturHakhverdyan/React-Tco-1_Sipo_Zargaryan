@@ -39,12 +39,21 @@ import { connect } from 'react-redux';
 
   return (
     <div className="filter-section">
+      <div className='inner-filter-section'>
       {FILTER_DATE_PICKERS.map((pickerData, index) => {
         const [date, setDate] = getFilterState(pickerData.value);
 
         return (
-          <div key={index}>
-            <p>{pickerData.label}</p>
+          
+          <div className='datapicker-section' key={index}>
+            <span>{pickerData.label}</span>
+            <span className='reset-pick'>   <i className='bx reset bxs-message-rounded-x'
+              onClick={() => {
+                setDate(new Date());
+                setFilterField([pickerData.value, ""]);
+              }}
+            >
+            </i></span>
             <DatePick
               startDate={date}
               setStartDate={(date) => {
@@ -56,23 +65,21 @@ import { connect } from 'react-redux';
               }}
               name={pickerData.value}
             />
-            <button
-              onClick={() => {
-                setDate(new Date());
-                setFilterField([pickerData.value, ""]);
-              }}
-            >
-              Reset
-            </button>
+         
           </div>
+         
         );
       })}
 
       <div className='status-section'>
         <p>Status</p>
+        <div className='status-btn'>
         <Button style={{ margin: "10px" }} onClick={taskStatusHandler}>Done</Button>
         <Button onClick={taskStatusHandler}>Active</Button>
+        </div>
+        
       </div>
+    </div>
     </div>
   );
 };

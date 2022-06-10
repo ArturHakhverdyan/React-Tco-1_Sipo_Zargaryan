@@ -41,7 +41,7 @@ export const ConnectedBody = ({ removeMultipleTasks, tasks, deleteSingleCard, ta
   };
   return (
 
-    <div>
+    <div >
       <div>
         {!!deletedTasksSet.size && <Button onClick={handleBatchDelete} color="primary">
           Delete All

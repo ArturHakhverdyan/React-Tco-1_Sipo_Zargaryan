@@ -78,7 +78,7 @@ export const removeMultipleTasksThunk = (batchDelTasks) => (dispatch,getState) =
         });
 }
 
-export const deleteSingleCardThunk = (_id) => (dispatch,getState) => {
+export const deleteSingleCardThunk = (_id) => (dispatch) => {
     fetch(`http://localhost:3001/task/${_id}`, {
         method: "DELETE",
       })
@@ -87,7 +87,6 @@ export const deleteSingleCardThunk = (_id) => (dispatch,getState) => {
           dispatch(deleteSingleCardAction(_id))     
         })
 }
-
 
 export const editTaskThunk = (_id,formEdit,onSubmitCallback) => (dispatch) => {
     fetch(`${BACKEND_URL}/task/${_id}`, {
