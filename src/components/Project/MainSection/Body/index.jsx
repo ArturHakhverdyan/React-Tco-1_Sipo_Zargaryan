@@ -4,13 +4,13 @@ import { CardComponent } from "../../CardComponent";
 import { connect } from "react-redux";
 
 import "./styles.css";
-import {  deleteSingleCardThunk, removeMultipleTasksThunk,  taskStatusChangeThunk } from "../../../../redux/action/task-action";
+import {  deleteSingleCardThunk, editTaskThunk, removeMultipleTasksThunk } from "../../../../redux/action/task-action";
 
 export const ConnectedBody = ({ removeMultipleTasks, tasks, deleteSingleCard, taskStatusChange }) => {
 
 
   const taskStatusChangeHendler = useCallback((_id, status) => {
-    taskStatusChange(_id,status)
+    taskStatusChange(_id,{status})
     
   }, [taskStatusChange])
 
@@ -77,5 +77,5 @@ const mapStateToProps = (state) => ({
 export const Body = connect(mapStateToProps, {
   removeMultipleTasks:removeMultipleTasksThunk,
   deleteSingleCard:deleteSingleCardThunk,
-  taskStatusChange:taskStatusChangeThunk
+  taskStatusChange:editTaskThunk
 })(ConnectedBody)

@@ -40,14 +40,14 @@ export const taskStatusChangeAction = (taskId) => {
         payload:taskId
     }
 }
-export const getTasksThunk = (query) => (dispatch, getState) => {
+export const setTasksThunk = (query) => (dispatch) => {
     getTasksRequest(query)
         .then(data => {
             dispatch(setTasksAction(data))
         })
 }
 
-export const addNewTaskThunk = (formData,onSubmitCallback) => (dispatch, getState) => {
+export const addNewTaskThunk = (formData,onSubmitCallback) => (dispatch) => {
     fetch(`${BACKEND_URL}/task`, {
         method: "POST",
         headers: {
@@ -73,7 +73,7 @@ export const removeMultipleTasksThunk = (batchDelTasks) => (dispatch,getState) =
         },
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           dispatch(removeMultipleTasksAction(batchDelTasks))
         });
 }
@@ -88,22 +88,9 @@ export const deleteSingleCardThunk = (_id) => (dispatch,getState) => {
         })
 }
 
-export const taskStatusChangeThunk = (_id,status) => (dispatch) => {
-    fetch(`http://localhost:3001/task/${_id}`, {
-        headers: { "Content-Type": "application/json" },
-        method: "PUT",
-        body: JSON.stringify({
-          status,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          dispatch(taskStatusChangeAction(data))
-        });
-}
 
-export const editTaskThunk = (editableState,onSubmitCallback,formEdit) => (dispatch) => {
-    fetch(`${BACKEND_URL}/task/${editableState._id}`, {
+export const editTaskThunk = (_id,formEdit,onSubmitCallback) => (dispatch) => {
+    fetch(`${BACKEND_URL}/task/${_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formEdit),
@@ -115,4 +102,9 @@ export const editTaskThunk = (editableState,onSubmitCallback,formEdit) => (dispa
         })
         onSubmitCallback()
 
+}
+export const taskStatusThunk = (status) => (dispatch) => {
+    fetch(`${BACKEND_URL}/task?status=${status}`)
+    .then(res => res.json())
+    .then(data => dispatch(setTasksAction(data)))
 }

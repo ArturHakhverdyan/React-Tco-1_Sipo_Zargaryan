@@ -1,13 +1,13 @@
 import './styles.css'
-import { BACKEND_URL, FILTER_DATE_PICKERS } from '../../../consts';
+import {  FILTER_DATE_PICKERS } from '../../../consts';
 import { useCallback,  useState } from 'react';
 import { DatePick } from '../../datePick';
 import * as moment from "moment";
 import { Button } from 'reactstrap';
-import { setTasksAction } from '../../../redux/action/task-action';
+import {  taskStatusThunk } from '../../../redux/action/task-action';
 import { connect } from 'react-redux';
 
- const FilterSectionConnected = ({ setFilterField ,setTasks}) => {
+ const FilterSectionConnected = ({ setFilterField ,taskStatus}) => {
  
   const createdLte = useState(new Date());
   const createdGte = useState(new Date());
@@ -31,16 +31,10 @@ import { connect } from 'react-redux';
     },
     [createdLte, createdGte, completedLte, completedGte]
   );
-  const Active = () => {
-    fetch(`${BACKEND_URL}/task?status=done`)
-      .then(res => res.json())
-      .then(data => setTasks(data))
-  }
-
-  const Done = () => {
-    fetch(`${BACKEND_URL}/task?status=active`)
-      .then(res => res.json())
-      .then(data => setTasks(data))
+  
+  const taskStatusHandler = (e) => {
+    const status = e.target.innerHTML.toLowerCase()
+    taskStatus(status)
   }
 
   return (
@@ -76,8 +70,8 @@ import { connect } from 'react-redux';
 
       <div className='status-section'>
         <p>Status</p>
-        <Button style={{ margin: "10px" }} onClick={Done}>Done</Button>
-        <Button onClick={Active}>Active</Button>
+        <Button style={{ margin: "10px" }} onClick={taskStatusHandler}>Done</Button>
+        <Button onClick={taskStatusHandler}>Active</Button>
       </div>
     </div>
   );
@@ -85,4 +79,7 @@ import { connect } from 'react-redux';
 
 
 
- export const  FilterSection =connect(null,{setTasks:setTasksAction}) (FilterSectionConnected)
+ export const  FilterSection =connect(null,{
+  taskStatus:taskStatusThunk 
+ }
+  ) (FilterSectionConnected)
