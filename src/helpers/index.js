@@ -4,3 +4,8 @@ export const generateQuery = (filterObject) => {
         return query
      }, "")
 }
+
+export const getToken = () => {
+    return JSON.parse(localStorage.getItem('token'))
+  }
+  

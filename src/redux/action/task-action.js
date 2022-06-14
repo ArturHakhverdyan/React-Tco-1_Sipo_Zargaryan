@@ -1,5 +1,6 @@
 import { getTasksRequest } from "../../api"
 import { BACKEND_URL } from "../../consts"
+import { getToken } from "../../helpers"
 
 export const setTasksAction = (tasks) => {
     return {
@@ -52,6 +53,7 @@ export const addNewTaskThunk = (formData,onSubmitCallback) => (dispatch) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${getToken()}`
         },
         body: JSON.stringify(formData),
     })
@@ -70,6 +72,7 @@ export const removeMultipleTasksThunk = (batchDelTasks) => (dispatch,getState) =
         }),
         headers: {
           "Content-type": "application/json",
+          authorization: `Bearer ${getToken()}`
         },
       })
         .then((res) => res.json())
@@ -81,6 +84,10 @@ export const removeMultipleTasksThunk = (batchDelTasks) => (dispatch,getState) =
 export const deleteSingleCardThunk = (_id) => (dispatch) => {
     fetch(`http://localhost:3001/task/${_id}`, {
         method: "DELETE",
+        headers: {
+            "Content-type": "application/json",
+            authorization: `Bearer ${getToken()}`
+          },
       })
         .then(res => res.json())
         .then(() => {
@@ -91,19 +98,28 @@ export const deleteSingleCardThunk = (_id) => (dispatch) => {
 export const editTaskThunk = (_id,formEdit,onSubmitCallback) => (dispatch) => {
     fetch(`${BACKEND_URL}/task/${_id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+        authorization: `Bearer ${getToken()}`
+    },
         body: JSON.stringify(formEdit),
     })
         .then((res) => res.json())
         .then((data) => {
             dispatch(editTaskAction(data))
-            
+            onSubmitCallback && onSubmitCallback()
         })
-        onSubmitCallback()
 
 }
+
+
+
 export const taskStatusThunk = (status) => (dispatch) => {
-    fetch(`${BACKEND_URL}/task?status=${status}`)
+    fetch(`${BACKEND_URL}/task?status=${status}`,{
+        headers: { 
+            "Content-Type": "application/json",
+            authorization: `Bearer ${getToken()}`
+         },
+    })
     .then(res => res.json())
     .then(data => dispatch(setTasksAction(data)))
 }

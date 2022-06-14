@@ -28,7 +28,7 @@ const EditTaskFormConected = ({ editableState,  onSubmitCallback,editTask }) => 
             description
         }
 
-        editTask(editableState,formEdit,onSubmitCallback)
+        editTask(editableState._id,formEdit,onSubmitCallback)
          
     }
 
