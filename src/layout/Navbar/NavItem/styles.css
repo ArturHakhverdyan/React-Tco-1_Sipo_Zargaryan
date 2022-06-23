@@ -3,16 +3,19 @@
   color: white;
   margin-left: 20px;
   cursor: pointer;
-  
-  
+
+
 }
+
 .nav-item:hover {
   color: rgb(166, 84, 243);
 }
 
-.nav-item.active {
-  color: blueviolet;
+.nav-item>a.active {
+  color: white;
 }
-.nav-item a {
+
+.nav-item>a {
   text-decoration: none;
+  color: rgb(166, 84, 243);
 }

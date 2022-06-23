@@ -3,7 +3,7 @@ import "./styles.css";
 
 export const NavItem = ({ label, link }) => {
   return (
-    <li className={`nav-item`}>
+    <li className={"nav-item"}>
       <NavLink
         to={`/${link}`}
         className={({ isActive }) => (isActive ? "active" : undefined)}

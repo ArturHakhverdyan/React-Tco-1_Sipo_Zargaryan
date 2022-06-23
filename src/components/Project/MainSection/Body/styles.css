@@ -6,5 +6,6 @@
   align-items: flex-start;
   flex-wrap: wrap;
   padding-top: 40px;
-  background-color: #3EECAC;
+  background-color: #ffffff;
+  background-image: linear-gradient(90deg, #ffffff 21%, #B5FFFC 41%);
 }

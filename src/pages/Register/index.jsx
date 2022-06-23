@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { Button, Form, FormGroup, Input, Label } from "reactstrap"
+import { Button, Form, FormGroup, FormFeedback, Input, Label } from "reactstrap"
 import { BACKEND_URL } from "../../consts";
 import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
+import './styles.css'
 
 export const Registration = () => {
     const navigate = useNavigate()
@@ -95,17 +96,21 @@ export const Registration = () => {
             };
         });
     };
-    
+
     return (
-        <Form onSubmit={onRegistrationSubmit}>
+        <Form onSubmit={onRegistrationSubmit} >
             <FormGroup>
                 <Label for="nameId">
                     Name
                 </Label>
                 <Input id="nameId"
-                 name="name"
-                 onChange={handleChange}  
-                 invalid={!!inputsData.name.error}/>
+                    name="name"
+                    onChange={handleChange}
+                    invalid={!!inputsData.name.error}
+                    style={{ width: "250px" }} />
+                     {!!inputsData.name.error && (
+                    <FormFeedback>{inputsData.name.error}</FormFeedback>
+                )}
             </FormGroup>
 
             <FormGroup>
@@ -113,9 +118,13 @@ export const Registration = () => {
                     Surname
                 </Label>
                 <Input id="surnameId"
-                 name="surname"
-                  onChange={handleChange} 
-                  invalid={!!inputsData.surname.error}/>
+                    name="surname"
+                    onChange={handleChange}
+                    invalid={!!inputsData.surname.error}
+                    style={{ width: "250px" }} />
+                     {!!inputsData.surname.error && (
+                    <FormFeedback>{inputsData.surname.error}</FormFeedback>
+                )}
             </FormGroup>
 
             <FormGroup>
@@ -123,9 +132,14 @@ export const Registration = () => {
                     Email
                 </Label>
                 <Input id="emailId"
-                 name="email"
-                  onChange={handleChange} 
-                  invalid={!!inputsData.email.error}/>
+                    name="email"
+                    onChange={handleChange}
+                    
+                    invalid={!!inputsData.email.error} 
+                    style={{ width: "250px" }} />
+                     {!!inputsData.email.error && (
+                    <FormFeedback>{inputsData.email.error}</FormFeedback>
+                )}
             </FormGroup>
 
             <FormGroup>
@@ -133,9 +147,13 @@ export const Registration = () => {
                     Password
                 </Label>
                 <Input id="passwordId"
-                 name="password"
-                  onChange={handleChange} 
-                  invalid={!!inputsData.password.error}/>
+                    name="password"
+                    onChange={handleChange}
+                    invalid={!!inputsData.password.error}
+                    style={{ width: "250px" }} />
+                {!!inputsData.password.error && (
+                    <FormFeedback>{inputsData.password.error}</FormFeedback>
+                )}
             </FormGroup>
 
             <FormGroup>
@@ -143,23 +161,27 @@ export const Registration = () => {
                     Confirm Password
                 </Label>
                 <Input id="confirmId"
-                 name="confirmPassword"
-                  onChange={handleChange}
-                  invalid={!!inputsData.confirmPassword.error} />
+                    name="confirmPassword"
+                    onChange={handleChange}
+                    invalid={!!inputsData.confirmPassword.error}
+                    style={{ width: "250px" }} />
+                     {!!inputsData.confirmPassword.error && (
+                    <FormFeedback>{inputsData.confirmPassword.error}</FormFeedback>
+                )}
             </FormGroup>
 
             <Button
-            disabled = {
-                !!inputsData.name.error ||
-                inputsData.name.value === ""  ||
-                !!inputsData.surname.error ||
-                inputsData.surname.value === "" ||
-                !!inputsData.email.error ||
-                inputsData.email.value === "" ||
-                !!inputsData.password.error ||
-                inputsData.password.value === "" ||
-                !!inputsData.confirmPassword.error ||
-                inputsData.confirmPassword.value === ""           }
+                disabled={
+                    !!inputsData.name.error ||
+                    inputsData.name.value === "" ||
+                    !!inputsData.surname.error ||
+                    inputsData.surname.value === "" ||
+                    !!inputsData.email.error ||
+                    inputsData.email.value === "" ||
+                    !!inputsData.password.error ||
+                    inputsData.password.value === "" ||
+                    !!inputsData.confirmPassword.error ||
+                    inputsData.confirmPassword.value === ""}
             >
                 Register</Button>
         </Form>
