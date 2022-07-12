@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CardImg } from "reactstrap";
 import { BACKEND_URL } from "../../consts";
+import { getToken } from "../../helpers";
 import './styles.css'
 
 export const SingleTask = () => {
@@ -14,10 +15,15 @@ export const SingleTask = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${BACKEND_URL}/task/${taskId}`)
+        fetch(`${BACKEND_URL}/task/${taskId}`, {
+            headers: {
+                authorization: `Bearer ${getToken()}`
+            }
+        })
             .then((res) => res.json())
             .then((data) => {
                 setSingleTask(data);
+                
             });
     }, [taskId]);
 

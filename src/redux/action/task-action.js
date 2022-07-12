@@ -123,3 +123,18 @@ export const taskStatusThunk = (status) => (dispatch) => {
     .then(res => res.json())
     .then(data => dispatch(setTasksAction(data)))
 }
+
+export const logOutThunk = (tokenJwt) => (dispatch) => {
+    fetch(`${BACKEND_URL}/user/sign-out`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jwt: tokenJwt }),
+  
+      })
+        .then(res => res.json)
+        .then(() => {
+          localStorage.removeItem("token")
+          localStorage.removeItem("refreshToken")
+         
+        })
+}

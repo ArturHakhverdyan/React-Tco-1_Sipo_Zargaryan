@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "../consts";
 import { getToken } from "../helpers";
 
-function get(url) {
+function _get(url) {
   return fetch(url, {
     method: 'GET',
     headers: {
@@ -15,5 +15,9 @@ function get(url) {
 }
 
 export function getTasksRequest(query) {
-  return get(`${BACKEND_URL}/task${query ? `?${query}` : ''}`);
+  return _get(`${BACKEND_URL}/task${query ? `?${query}` : ''}`);
+}
+
+export function getUserData() {
+  return _get(`${BACKEND_URL}/user`);
 }

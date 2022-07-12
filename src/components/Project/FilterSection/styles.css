@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
+  flex-direction: column;
 }
 
 .datapicker-section {
@@ -58,4 +58,8 @@
 
 .status-btn {
   width: 160px;
+}
+.log{
+  font-size: 30px;
+  cursor: pointer;
 }

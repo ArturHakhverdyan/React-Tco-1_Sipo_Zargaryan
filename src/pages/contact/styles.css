@@ -1,0 +1,34 @@
+.contact-wrapper{
+    width: 100%;
+    height:500px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+
+}
+.contact-wrapper > :last-child{
+    width: 40%;
+    height: 400px;
+    box-shadow: 0 -15px 10px 0 aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+   background-color: rgb(231, 243, 239);
+}
+.contact-img-wrapper{
+    height: 400px;
+    width: 40%;
+    box-shadow: 0 15px 10px 0 aqua;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(231, 243, 239);
+}
+
+.bx-message-dots{
+    font-size: 400px;
+    color:aqua;
+}

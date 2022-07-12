@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Form, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 import { BACKEND_URL } from '../../consts';
 import { IsRequired, MinLength3, MaxLength20 } from '../../helpers/validation'
-
+import "./styles.css"
 
 export const ContactPage = () => {
 
@@ -66,14 +66,13 @@ export const ContactPage = () => {
           },
       };
   });
-
-
   }
 
-
-
-
   return (
+    <div className='contact-wrapper'>
+      <div className='contact-img-wrapper'>
+      <i className='bx bx-message-dots'></i>
+      </div>
     <Form>
       <FormGroup>
         <Label for='nameId'>
@@ -120,5 +119,6 @@ export const ContactPage = () => {
         Submit
       </Button>
     </Form>
+    </div>
   );
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Button, Form, FormGroup, FormFeedback, Input, Label } from "reactstrap"
 import { BACKEND_URL } from "../../consts";
-import { IsRequired, MaxLength20, MinLength3 } from "../../helpers/validation";
+import { IsRequired, MinLength6, MaxLength20, MinLength3 } from "../../helpers/validation";
 import './styles.css'
 
 export const Registration = () => {
@@ -27,12 +27,12 @@ export const Registration = () => {
         password: {
             value: "",
             error: undefined,
-            validations: [IsRequired, MinLength3, MaxLength20]
+            validations: [IsRequired, MinLength6, MaxLength20]
         },
         confirmPassword: {
             value: "",
             error: undefined,
-            validations: [IsRequired, MinLength3, MaxLength20]
+            validations: [IsRequired, MinLength6, MaxLength20]
         },
     });
 
@@ -97,94 +97,98 @@ export const Registration = () => {
         });
     };
 
-    return (
-        <Form onSubmit={onRegistrationSubmit} >
-            <FormGroup>
-                <Label for="nameId">
-                    Name
-                </Label>
-                <Input id="nameId"
-                    name="name"
-                    onChange={handleChange}
-                    invalid={!!inputsData.name.error}
-                    style={{ width: "250px" }} />
-                     {!!inputsData.name.error && (
-                    <FormFeedback>{inputsData.name.error}</FormFeedback>
-                )}
-            </FormGroup>
+    return (<div className="register-page-wrapper">
+        <div className="register-form-wrapper">
+            <Form onSubmit={onRegistrationSubmit} >
+                <FormGroup>
+                    <Label for="nameId">
+                        Name
+                    </Label>
+                    <Input id="nameId"
+                        name="name"
+                        onChange={handleChange}
+                        invalid={!!inputsData.name.error}
+                        style={{ width: "250px" }} />
+                    {!!inputsData.name.error && (
+                        <FormFeedback>{inputsData.name.error}</FormFeedback>
+                    )}
+                </FormGroup>
 
-            <FormGroup>
-                <Label for="surnameId">
-                    Surname
-                </Label>
-                <Input id="surnameId"
-                    name="surname"
-                    onChange={handleChange}
-                    invalid={!!inputsData.surname.error}
-                    style={{ width: "250px" }} />
-                     {!!inputsData.surname.error && (
-                    <FormFeedback>{inputsData.surname.error}</FormFeedback>
-                )}
-            </FormGroup>
+                <FormGroup>
+                    <Label for="surnameId">
+                        Surname
+                    </Label>
+                    <Input id="surnameId"
+                        name="surname"
+                        onChange={handleChange}
+                        invalid={!!inputsData.surname.error}
+                        style={{ width: "250px" }} />
+                    {!!inputsData.surname.error && (
+                        <FormFeedback>{inputsData.surname.error}</FormFeedback>
+                    )}
+                </FormGroup>
 
-            <FormGroup>
-                <Label for="emailId">
-                    Email
-                </Label>
-                <Input id="emailId"
-                    name="email"
-                    onChange={handleChange}
-                    
-                    invalid={!!inputsData.email.error} 
-                    style={{ width: "250px" }} />
-                     {!!inputsData.email.error && (
-                    <FormFeedback>{inputsData.email.error}</FormFeedback>
-                )}
-            </FormGroup>
+                <FormGroup>
+                    <Label for="emailId">
+                        Email
+                    </Label>
+                    <Input id="emailId"
+                        name="email"
+                        onChange={handleChange}
 
-            <FormGroup>
-                <Label for="passwordId">
-                    Password
-                </Label>
-                <Input id="passwordId"
-                    name="password"
-                    onChange={handleChange}
-                    invalid={!!inputsData.password.error}
-                    style={{ width: "250px" }} />
-                {!!inputsData.password.error && (
-                    <FormFeedback>{inputsData.password.error}</FormFeedback>
-                )}
-            </FormGroup>
+                        invalid={!!inputsData.email.error}
+                        style={{ width: "250px" }} />
+                    {!!inputsData.email.error && (
+                        <FormFeedback>{inputsData.email.error}</FormFeedback>
+                    )}
+                </FormGroup>
 
-            <FormGroup>
-                <Label for="confirmId">
-                    Confirm Password
-                </Label>
-                <Input id="confirmId"
-                    name="confirmPassword"
-                    onChange={handleChange}
-                    invalid={!!inputsData.confirmPassword.error}
-                    style={{ width: "250px" }} />
-                     {!!inputsData.confirmPassword.error && (
-                    <FormFeedback>{inputsData.confirmPassword.error}</FormFeedback>
-                )}
-            </FormGroup>
+                <FormGroup>
+                    <Label for="passwordId">
+                        Password
+                    </Label>
+                    <Input id="passwordId"
+                        name="password"
+                        onChange={handleChange}
+                        invalid={!!inputsData.password.error}
+                        style={{ width: "250px" }} />
+                    {!!inputsData.password.error && (
+                        <FormFeedback>{inputsData.password.error}</FormFeedback>
+                    )}
+                </FormGroup>
 
-            <Button
-                disabled={
-                    !!inputsData.name.error ||
-                    inputsData.name.value === "" ||
-                    !!inputsData.surname.error ||
-                    inputsData.surname.value === "" ||
-                    !!inputsData.email.error ||
-                    inputsData.email.value === "" ||
-                    !!inputsData.password.error ||
-                    inputsData.password.value === "" ||
-                    !!inputsData.confirmPassword.error ||
-                    inputsData.confirmPassword.value === ""}
-            >
-                Register</Button>
-        </Form>
+                <FormGroup>
+                    <Label for="confirmId">
+                        Confirm Password
+                    </Label>
+                    <Input id="confirmId"
+                        name="confirmPassword"
+                        onChange={handleChange}
+                        invalid={!!inputsData.confirmPassword.error ||
+                            inputsData.password.value !== inputsData.confirmPassword.value}
+                        style={{ width: "250px" }} />
+                    {inputsData.confirmPassword.value !== inputsData.password.value && (
+                        <FormFeedback><p>The Confirm Password must be same as the Password</p></FormFeedback>
+                    )}
+                </FormGroup>
+
+                <Button
+                    disabled={
+                        !!inputsData.name.error ||
+                        inputsData.name.value === "" ||
+                        !!inputsData.surname.error ||
+                        inputsData.surname.value === "" ||
+                        !!inputsData.email.error ||
+                        inputsData.email.value === "" ||
+                        !!inputsData.password.error ||
+                        inputsData.password.value === "" ||
+                        !!inputsData.confirmPassword.error ||
+                        inputsData.confirmPassword.value === ""}
+                >
+                    Register</Button>
+            </Form>
+        </div>
+    </div>
 
     )
 }

@@ -1,3 +1,16 @@
-.404_page{
+.page404{
+    background-color: rgb(231, 243, 239);
+    width: 100%;
+    height: 100%;
+    color: red;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
+
+}
+.text404{
+    font-size: 150px;
 }

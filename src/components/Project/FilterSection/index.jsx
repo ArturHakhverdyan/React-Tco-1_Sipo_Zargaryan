@@ -1,18 +1,20 @@
 import './styles.css'
-import {  FILTER_DATE_PICKERS } from '../../../consts';
-import { useCallback,  useState } from 'react';
+import { FILTER_DATE_PICKERS } from '../../../consts';
+import { useCallback, useState } from 'react';
 import { DatePick } from '../../datePick';
 import * as moment from "moment";
 import { Button } from 'reactstrap';
-import {  taskStatusThunk } from '../../../redux/action/task-action';
+import { logOutThunk, taskStatusThunk } from '../../../redux/action/task-action';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
- const FilterSectionConnected = ({ setFilterField ,taskStatus}) => {
- 
+const FilterSectionConnected = ({ setFilterField, taskStatus,logOut }) => {
+
   const createdLte = useState(new Date());
   const createdGte = useState(new Date());
   const completedLte = useState(new Date());
   const completedGte = useState(new Date());
+  const navigate = useNavigate()
 
   const getFilterState = useCallback(
     (name) => {
@@ -31,62 +33,73 @@ import { connect } from 'react-redux';
     },
     [createdLte, createdGte, completedLte, completedGte]
   );
-  
+
   const taskStatusHandler = (e) => {
     const status = e.target.innerHTML.toLowerCase()
     taskStatus(status)
   }
 
+  const onLogOut = () => {
+    const tokenJwt = JSON.parse(localStorage.getItem("token"))
+    logOut(tokenJwt)
+    navigate("/login")
+    
+  }
+
   return (
     <div className="filter-section">
+      <i className='bx log bx-log-out' onClick={onLogOut}></i>
       <div className='inner-filter-section'>
-      {FILTER_DATE_PICKERS.map((pickerData, index) => {
-        const [date, setDate] = getFilterState(pickerData.value);
+        {FILTER_DATE_PICKERS.map((pickerData, index) => {
+          const [date, setDate] = getFilterState(pickerData.value);
 
-        return (
-          
-          <div className='datapicker-section' key={index}>
-            <span>{pickerData.label}</span>
-            <span className='reset-pick'>   <i className='bx reset bxs-message-rounded-x'
-              onClick={() => {
-                setDate(new Date());
-                setFilterField([pickerData.value, ""]);
-              }}
-            >
-            </i></span>
-            <DatePick
-              startDate={date}
-              setStartDate={(date) => {
-                setDate(date);
-                setFilterField([
-                  pickerData.value,
-                  moment(date).format("YYYY-MM-DD"),
-                ]);
-              }}
-              name={pickerData.value}
-            />
-         
+          return (
+
+            <div className='datapicker-section' key={index}>
+
+              <span>{pickerData.label}</span>
+              <span className='reset-pick'>   <i className='bx reset bxs-message-rounded-x'
+                onClick={() => {
+                  setDate(new Date());
+                  setFilterField([pickerData.value, ""]);
+                }}
+              >
+              </i></span>
+              <DatePick
+                startDate={date}
+                setStartDate={(date) => {
+                  setDate(date);
+                  setFilterField([
+                    pickerData.value,
+                    moment(date).format("YYYY-MM-DD"),
+                  ]);
+                }}
+                name={pickerData.value}
+              />
+
+            </div>
+
+          );
+
+        })}
+
+        <div className='status-section'>
+          <p>Status</p>
+          <div className='status-btn'>
+            <Button style={{ margin: "10px" }} onClick={taskStatusHandler}>Done</Button>
+            <Button onClick={taskStatusHandler}>Active</Button>
           </div>
-         
-        );
-      })}
 
-      <div className='status-section'>
-        <p>Status</p>
-        <div className='status-btn'>
-        <Button style={{ margin: "10px" }} onClick={taskStatusHandler}>Done</Button>
-        <Button onClick={taskStatusHandler}>Active</Button>
         </div>
-        
       </div>
-    </div>
     </div>
   );
 };
 
 
 
- export const  FilterSection =connect(null,{
-  taskStatus:taskStatusThunk 
- }
-  ) (FilterSectionConnected)
+export const FilterSection = connect(null, {
+  taskStatus: taskStatusThunk,
+  logOut:logOutThunk
+}
+)(FilterSectionConnected)

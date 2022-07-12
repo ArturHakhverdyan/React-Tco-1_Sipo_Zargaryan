@@ -1,0 +1,19 @@
+.about-page-wrapper {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.about-page-img-wrapper {
+    width: 300px;
+    height: 100px;
+
+}
+
+.about-page-text {
+    background-color: rgb(231, 243, 239);
+    width: 400px;
+    height: 400px;
+
+
+}
